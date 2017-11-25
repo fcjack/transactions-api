@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @Slf4j
@@ -16,5 +17,11 @@ public class DefaultController {
     @ExceptionHandler(InvalidTimestampException.class)
     public void invalidTimestampExceptionHandler() {
         log.error("Invalid Timestamp exception handler");
+    }
+
+    @ResponseStatus(value = BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public void illegalArgumentExceptionHandler() {
+        log.error("Required field was not received");
     }
 }

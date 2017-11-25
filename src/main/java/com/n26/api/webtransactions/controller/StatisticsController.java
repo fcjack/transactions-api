@@ -1,5 +1,6 @@
 package com.n26.api.webtransactions.controller;
 
+import com.n26.api.webtransactions.model.Statistics;
 import com.n26.api.webtransactions.services.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,7 @@ public class StatisticsController {
 
 
     @RequestMapping(method = RequestMethod.GET)
-    public DoubleSummaryStatistics getStatistics() {
-        return statisticsService.getStatistics();
+    public Statistics getStatistics() {
+        return new Statistics(statisticsService.getStatistics());
     }
 }

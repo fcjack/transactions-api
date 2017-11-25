@@ -6,8 +6,11 @@ import com.n26.api.webtransactions.WebTransactionsApplicationTests;
 import com.n26.api.webtransactions.model.Transaction;
 import com.n26.api.webtransactions.services.StatisticsService;
 import com.n26.api.webtransactions.services.TransactionService;
+import com.n26.api.webtransactions.storage.TransactionStorage;
+import com.n26.api.webtransactions.storage.impl.TransactionStorageImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matchers;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class StatisticsControllerTest extends WebTransactionsApplicationTests {
@@ -37,6 +42,9 @@ public class StatisticsControllerTest extends WebTransactionsApplicationTests {
 
     @Autowired
     private TransactionService transactionService;
+
+    @Autowired
+    private TransactionStorage transactionStorage;
 
     @Before
     public void setup() {
@@ -68,7 +76,7 @@ public class StatisticsControllerTest extends WebTransactionsApplicationTests {
     public void getUpdatedStatistics() throws Exception {
         ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneOffset.UTC);
 
-        Transaction transaction = new Transaction(30.0, zonedDateTime.toInstant().minusSeconds(50).toEpochMilli());
+        Transaction transaction = new Transaction(30.0, zonedDateTime.toInstant().minusSeconds(55).toEpochMilli());
         transactionService.save(transaction);
 
 
@@ -87,7 +95,12 @@ public class StatisticsControllerTest extends WebTransactionsApplicationTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("max", Matchers.is(70.0)))
                 .andExpect(MockMvcResultMatchers.jsonPath("min", Matchers.is(70.0)))
                 .andExpect(MockMvcResultMatchers.jsonPath("sum", Matchers.is(70.0)))
-                .andExpect(MockMvcResultMatchers.jsonPath("average", Matchers.is(70.0)))
+                .andExpect(MockMvcResultMatchers.jsonPath("avg", Matchers.is(70.0)))
                 .andDo(MockMvcResultHandlers.print());
+    }
+
+    @After
+    public void after() {
+        ((TransactionStorageImpl) transactionStorage).initialize();
     }
 }

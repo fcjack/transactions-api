@@ -12,7 +12,7 @@ public class DateUtil {
         Instant instant = Instant.ofEpochMilli(value);
         ZonedDateTime receivedValue = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
 
-        long diff = ChronoUnit.SECONDS.between(zonedDateTime, receivedValue);
+        long diff = unit.between(zonedDateTime, receivedValue);
         if (diff < 0) diff = Math.abs(diff);
 
         return diff > duration;

@@ -1,6 +1,7 @@
 package com.n26.api.webtransactions.validation;
 
 import com.n26.api.webtransactions.exception.InvalidTimestampException;
+import com.n26.api.webtransactions.exception.RequiredFieldException;
 import com.n26.api.webtransactions.util.DateUtil;
 
 import javax.validation.ConstraintValidator;
@@ -17,6 +18,11 @@ public class AtLeastValidator implements ConstraintValidator<AtLeast, Long> {
 
     @Override
     public boolean isValid(Long value, ConstraintValidatorContext context) {
+        if (value == null) {
+            throw new RequiredFieldException("Field Timestamp is mandatory");
+        }
+
+
         if (DateUtil.olderThenLimit(value, atLeastAnnotation.unit(), atLeastAnnotation.duration())) {
             throw new InvalidTimestampException(atLeastAnnotation.message());
         }

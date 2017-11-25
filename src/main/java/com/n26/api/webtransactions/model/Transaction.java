@@ -1,9 +1,7 @@
 package com.n26.api.webtransactions.model;
 
 import com.n26.api.webtransactions.validation.AtLeast;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -12,6 +10,8 @@ import java.time.temporal.ChronoUnit;
 @Getter
 @Setter
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class Transaction implements Serializable {
 
     @NotNull
