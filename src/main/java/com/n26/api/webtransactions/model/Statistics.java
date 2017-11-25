@@ -18,9 +18,20 @@ public class Statistics {
 
     public Statistics(DoubleSummaryStatistics doubleSummaryStatistics) {
         setAvg(doubleSummaryStatistics.getAverage());
-        setMax(doubleSummaryStatistics.getMax());
-        setMin(doubleSummaryStatistics.getMin());
+
         setSum(doubleSummaryStatistics.getSum());
         setCount(doubleSummaryStatistics.getCount());
+
+        if (Double.isInfinite(doubleSummaryStatistics.getMax()) || Double.isNaN(doubleSummaryStatistics.getMax())) {
+            setMax(0.0);
+        } else {
+            setMax(doubleSummaryStatistics.getMax());
+        }
+
+        if (Double.isInfinite(doubleSummaryStatistics.getMin()) || Double.isNaN(doubleSummaryStatistics.getMin())) {
+            setMin(0.0);
+        } else {
+            setMin(doubleSummaryStatistics.getMax());
+        }
     }
 }
