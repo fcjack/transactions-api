@@ -99,6 +99,21 @@ public class StatisticsControllerTest extends WebTransactionsApplicationTests {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    public void getStatisticsWithoutTransactions() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/statistics")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("count", Matchers.is(0)))
+                .andExpect(MockMvcResultMatchers.jsonPath("max", Matchers.is(0.0)))
+                .andExpect(MockMvcResultMatchers.jsonPath("min", Matchers.is(0.0)))
+                .andExpect(MockMvcResultMatchers.jsonPath("sum", Matchers.is(0.0)))
+                .andExpect(MockMvcResultMatchers.jsonPath("avg", Matchers.is(0.0)))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     @After
     public void after() {
         ((TransactionStorageImpl) transactionStorage).initialize();
