@@ -50,4 +50,4 @@ If you prefer change the port of the project you can add the instruction ``serve
 file on resources folder, after that you can rebuild and start the application.
 
 The default port of the project is 8080. So, to consume the API all the request will be in format: 
-http://<server.host>:<server.port>/<endpoint> 
+http://<server.host>:<server.port>/{endpoint}
