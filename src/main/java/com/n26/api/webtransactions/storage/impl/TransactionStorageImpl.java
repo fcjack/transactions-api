@@ -52,8 +52,9 @@ public class TransactionStorageImpl implements TransactionStorage {
     @Scheduled(fixedRate = 1000)
     public void removeOldValues() {
         Transaction head = transactions.peek();
-        if (head != null && DateUtil.olderThenLimit(head.getTimestamp(), ChronoUnit.SECONDS, MAX_DURATION)) {
+        while (head != null && DateUtil.olderThenLimit(head.getTimestamp(), ChronoUnit.SECONDS, MAX_DURATION)) {
             transactions.poll();
+            head = transactions.peek();
         }
 
         atomicStatistics.updateAndGet(doubleSummaryStatistics1 -> transactions.stream()
