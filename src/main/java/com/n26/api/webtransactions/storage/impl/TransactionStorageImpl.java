@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.DoubleSummaryStatistics;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -36,7 +37,15 @@ public class TransactionStorageImpl implements TransactionStorage {
     public void save(Transaction transaction) {
         transactions.add(transaction);
         Runnable task = this::updateStatistics;
+        Runnable sortTaks = this::sortQueue;
         executor.submit(task);
+        executor.submit(sortTaks);
+    }
+
+    private void sortQueue() {
+        transactions = transactions.stream()
+                .sorted(Comparator.comparingLong(Transaction::getTimestamp))
+                .collect(Collectors.toCollection(ConcurrentLinkedQueue::new));
     }
 
     private void updateStatistics() {

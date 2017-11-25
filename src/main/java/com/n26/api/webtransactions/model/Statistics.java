@@ -31,7 +31,7 @@ public class Statistics {
         if (Double.isInfinite(doubleSummaryStatistics.getMin()) || Double.isNaN(doubleSummaryStatistics.getMin())) {
             setMin(0.0);
         } else {
-            setMin(doubleSummaryStatistics.getMax());
+            setMin(doubleSummaryStatistics.getMin());
         }
     }
 }
